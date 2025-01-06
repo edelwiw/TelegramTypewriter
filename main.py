@@ -24,21 +24,21 @@ async def message_typing_task(event):
 async def creeping_line(event, window_size=10):
     message_text = event.raw_text.split(" ", 1)[1] # get the message text
     # write first window_size characters 
-    for i in range(1, window_size + 1):
+    for i in range(1, min(window_size, len(message_text)) + 1):
         if message_text[i - 1] == " ":
             continue # skip spaces to avoid sending same message
         await event.edit(message_text[:i]) # edit the message with the first i characters
         await asyncio.sleep(0.5)     
         
     # write with moving window
-    for i in range(window_size + 1, len(message_text) + 1):
+    for i in range(min(window_size, len(message_text)) + 1, len(message_text) + 1):
         if message_text[i - 1] == " " or message_text[i - window_size - 1] == " ":
             continue
         await event.edit(message_text[i - window_size:i])
         await asyncio.sleep(0.5)
     
     # move left characters to the left 
-    for i in range(window_size - 1, 0, -1):
+    for i in range(min(window_size, len(message_text)) - 1, 0, -1):
         if message_text[len(message_text) - i - 1] == " ":
             continue
         await event.edit(message_text[-i:])
