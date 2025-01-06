@@ -39,7 +39,7 @@ async def creeping_line(event, window_size=10):
     
     # move left characters to the left 
     for i in range(window_size - 1, 0, -1):
-        if message_text[len(message_text) - i] == " ":
+        if message_text[len(message_text) - i - 1] == " ":
             continue
         await event.edit(message_text[-i:])
         await asyncio.sleep(0.5)
